@@ -1,6 +1,6 @@
 module.exports = {
-  CartModel: require("./Cart"),
-  OrderModel: require("./Order"),
-  ProductModel: require("./Product"),
-  UserModel: require("./User"),
+  Cart: require("./Cart"),
+  Order: require("./Order"),
+  Product: require("./Product"),
+  User: require("./User"),
 };

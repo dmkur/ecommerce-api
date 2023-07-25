@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 const { MONGO_URL, PORT } = require("./config/config");
-const { userRoute } = require("./routes");
+const { userRoute, authRoute } = require("./routes");
 
 const app = express();
 
@@ -15,10 +15,13 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 app.use("/ping", (req, res) => {
   res.json("pong");
 });
+
+app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 
 app.listen(PORT, () => {
