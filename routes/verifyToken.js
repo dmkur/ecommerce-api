@@ -6,8 +6,10 @@ const verifyToken = (req, res, next) => {
   if (authHeader) {
     const token = authHeader.split(' ')[1];
 
+    // тут ми розшифрували токен і отримали id, isAdmin про юзера який шифрували ранші
     jwt.verify(token, JWT_SEC, (err, user) => {
       if (err) res.status(403).json('Token isn`t valid');
+      // і ств новий обєкт в тілі req з данними які отримали id, isAdmin
       req.user = user;
       next();
     });
@@ -38,5 +40,6 @@ const verifyTokenAndAdmin = (req, res, next) => {
 
 module.exports = {
   verifyToken,
-  verifyTokenAndAuthorization
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin
 };
