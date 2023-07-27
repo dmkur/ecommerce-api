@@ -1,17 +1,17 @@
-const { Router } = require("express");
+const { Router } = require('express');
 
 const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
   verifyToken,
-} = require("./verifyToken");
+} = require('./verifyToken');
 
-const { Cart } = require("../models");
+const { Cart } = require('../models');
 
 const cartRouter = Router();
 
 // CREATE
-cartRouter.post("/", verifyToken, async (req, res) => {
+cartRouter.post('/', verifyToken, async (req, res) => {
   const newCart = new Cart(req.body);
 
   try {
@@ -24,7 +24,7 @@ cartRouter.post("/", verifyToken, async (req, res) => {
 });
 
 // UPDATE
-cartRouter.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+cartRouter.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
   try {
     const upadatedCart = await Cart.findByIdAndUpdate(
       req.params.id,
@@ -39,11 +39,11 @@ cartRouter.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 });
 
 // DELETE
-cartRouter.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+cartRouter.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
   try {
     await Cart.findOneAndDelete(req.params.id);
 
-    res.send("Cart has been deleted!");
+    res.send('Cart has been deleted!');
   } catch (err) {
     res.status(500).json(err);
   }
@@ -51,7 +51,7 @@ cartRouter.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
 
 // GET USER CART
 cartRouter.get(
-  "/find/:userId",
+  '/find/:userId',
   verifyTokenAndAuthorization,
   async (req, res) => {
     try {
@@ -65,7 +65,7 @@ cartRouter.get(
 );
 
 // GET ALL
-cartRouter.get("/", verifyTokenAndAdmin, async (req, res) => {
+cartRouter.get('/', verifyTokenAndAdmin, async (req, res) => {
   try {
     const carts = await Cart.find();
     res.json(carts);

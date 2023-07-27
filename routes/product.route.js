@@ -1,16 +1,16 @@
-const { Router } = require("express");
-const CryptoJS = require("crypto-js");
+const { Router } = require('express');
+
 const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
-} = require("./verifyToken");
-const { PAS_SEC } = require("../config/config");
-const { Product } = require("../models");
+} = require('./verifyToken');
+
+const { Product } = require('../models');
 
 const productRouter = Router();
 
 // CREATE
-productRouter.post("/", verifyTokenAndAuthorization, async (req, res) => {
+productRouter.post('/', verifyTokenAndAuthorization, async (req, res) => {
   const newProduct = new Product(req.body);
 
   try {
@@ -23,7 +23,7 @@ productRouter.post("/", verifyTokenAndAuthorization, async (req, res) => {
 });
 
 // UPDATE
-productRouter.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+productRouter.put('/:id', verifyTokenAndAdmin, async (req, res) => {
   try {
     const upadatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -38,18 +38,18 @@ productRouter.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 // DELETE
-productRouter.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+productRouter.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
   try {
     await Product.findOneAndDelete(req.params.id);
 
-    res.send("Product has been deleted!");
+    res.send('Product has been deleted!');
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
 // GET PRODUCT BY ID
-productRouter.get("/find/:id", async (req, res) => {
+productRouter.get('/find/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
 
@@ -60,7 +60,7 @@ productRouter.get("/find/:id", async (req, res) => {
 });
 
 // GET ALL
-productRouter.get("/", async (req, res) => {
+productRouter.get('/', async (req, res) => {
   try {
     let product;
     const qNew = req.query.new;

@@ -1,16 +1,16 @@
-const { Router } = require("express");
-const CryptoJS = require("crypto-js");
+const { Router } = require('express');
+const CryptoJS = require('crypto-js');
 const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
-} = require("./verifyToken");
-const { PAS_SEC } = require("../config/config");
-const { User } = require("../models");
+} = require('./verifyToken');
+const { PAS_SEC } = require('../config/config');
+const { User } = require('../models');
 
 const userRouter = Router();
 
 // UPDATE
-userRouter.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+userRouter.put('/:id', verifyTokenAndAuthorization, async (req, res) => {
   if (req.body.password) {
     // якщо це password знову його шифруємо
     req.body.password = CryptoJS.AES.encrypt(
@@ -34,18 +34,18 @@ userRouter.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 });
 
 // DELETE
-userRouter.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+userRouter.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
   try {
     await User.findOneAndDelete(req.params.id);
 
-    res.send("User has been deleted!");
+    res.send('User has been deleted!');
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
 // GET BY ID
-userRouter.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
+userRouter.get('/find/:id', verifyTokenAndAdmin, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
 
@@ -58,7 +58,7 @@ userRouter.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 // GET ALL
-userRouter.get("/", verifyTokenAndAdmin, async (req, res) => {
+userRouter.get('/', verifyTokenAndAdmin, async (req, res) => {
   try {
     const query = req.query.new;
 
@@ -76,15 +76,15 @@ userRouter.get("/", verifyTokenAndAdmin, async (req, res) => {
 
 // GET USER STATS
 
-userRouter.get("/stats", async (req, res) => {
+userRouter.get('/stats', async (req, res) => {
   const date = new Date(); // current date
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1)); // return last year from today
 
   try {
     const data = await User.aggregate([
       { $match: { createdAt: { $gte: lastYear } } }, // match users during last year from today
-      { $project: { month: { $month: "$createdAt" } } }, // return month from createdAt field
-      { $group: { _id: "$month", total: { $sum: 1 } } }, // return id:9 -september, total:2 - qty users
+      { $project: { month: { $month: '$createdAt' } } }, // return month from createdAt field
+      { $group: { _id: '$month', total: { $sum: 1 } } }, // return id:9 -september, total:2 - qty users
     ]);
 
     res.json(data);

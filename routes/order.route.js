@@ -1,15 +1,15 @@
-const { Router } = require("express");
+const { Router } = require('express');
 const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
   verifyToken,
-} = require("./verifyToken");
-const { Order } = require("../models");
+} = require('./verifyToken');
+const { Order } = require('../models');
 
 const orderRouter = Router();
 
 // CREATE
-orderRouter.post("/", verifyToken, async (req, res) => {
+orderRouter.post('/', verifyToken, async (req, res) => {
   const newOrder = new Order(req.body);
 
   try {
@@ -18,11 +18,12 @@ orderRouter.post("/", verifyToken, async (req, res) => {
     res.json(savedOrder);
   } catch (err) {
     res.status(500).json(err);
+    console.log('1');
   }
 });
 
 // UPDATE
-orderRouter.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+orderRouter.put('/:id', verifyTokenAndAdmin, async (req, res) => {
   try {
     const upadatedOrder = await Order.findByIdAndUpdate(
       req.params.id,
@@ -37,11 +38,11 @@ orderRouter.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 });
 
 // DELETE
-orderRouter.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+orderRouter.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
   try {
     await Order.findOneAndDelete(req.params.id);
 
-    res.send("Order has been deleted!");
+    res.send('Order has been deleted!');
   } catch (err) {
     res.status(500).json(err);
   }
@@ -49,7 +50,7 @@ orderRouter.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 // // GET USER Orders
 orderRouter.get(
-  "/find/:userId",
+  '/find/:userId',
   verifyTokenAndAuthorization,
   async (req, res) => {
     try {
@@ -63,7 +64,7 @@ orderRouter.get(
 );
 
 // GET ALL
-orderRouter.get("/", verifyTokenAndAdmin, async (req, res) => {
+orderRouter.get('/', verifyTokenAndAdmin, async (req, res) => {
   try {
     const orders = await Order.find();
     res.json(orders);
@@ -73,7 +74,7 @@ orderRouter.get("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 // get monthly income
-orderRouter.get("/income", verifyTokenAndAdmin, async (req, res) => {
+orderRouter.get('/income', verifyTokenAndAdmin, async (req, res) => {
   const date = new Date(); // current date
   const lastMonth = new Date(date.setMonth(date.getMonth() - 1)); // return last month
   const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1)); // return previous month from last month
@@ -81,8 +82,8 @@ orderRouter.get("/income", verifyTokenAndAdmin, async (req, res) => {
   try {
     const income = await Order.aggregate([
       { $match: { createdAt: { $gte: previousMonth } } }, // match users during last year from today
-      { $project: { month: { $month: "$createdAt" }, sales: "$amount" } }, // return month from createdAt field
-      { $group: { _id: "$month" }, total: { $sum: "$sales" } },
+      { $project: { month: { $month: '$createdAt' }, sales: '$amount' } }, // return month from createdAt field
+      { $group: { _id: '$month' }, total: { $sum: '$sales' } },
     ]);
 
     res.json(income);
