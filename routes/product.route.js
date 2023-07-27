@@ -10,7 +10,6 @@ const { Product } = require("../models");
 const productRouter = Router();
 
 // CREATE
-
 productRouter.post("/", verifyTokenAndAuthorization, async (req, res) => {
 const newProduct = new Product(req.body)
 
@@ -23,70 +22,64 @@ const newProduct = new Product(req.body)
   }
 });
 
-// // UPDATE
-// productRouter.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
-//   if (req.body.password) {
-//     // якщо це password знову його шифруємо
-//     req.body.password = CryptoJS.AES.encrypt(
-//       req.body.password,
-//       PAS_SEC
-//     ).toString();
-//   }
+// UPDATE
+productRouter.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const upadatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
 
-//   try {
-//     const upadatedUser = await User.findByIdAndUpdate(
-//       req.params.id,
-//       { $set: req.body },
-//       { new: true }
-//     );
-//     //    { new: true } - return new user
+    res.json(upadatedProduct);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
-//     res.json(upadatedUser);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+// DELETE
+productRouter.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    await Product.findOneAndDelete(req.params.id);
 
-// // DELETE
-// productRouter.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
-//   try {
-//     await User.findOneAndDelete(req.params.id);
+    res.send("Product has been deleted!");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
-//     res.send("User has been deleted!");
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+// GET PRODUCT BY ID
+productRouter.get("/find/:id", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
 
-// // GET BY ID
-// productRouter.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
-//   try {
-//     const user = await User.findById(req.params.id);
+    res.send(product);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
-//     const { password, ...other } = user._doc;
+// GET ALL
+productRouter.get("/", async (req, res) => {
+  try {
+    let product
+    const qNew = req.query.new;
+    const qCategory = req.query.category;
+    
+    if(qNew){
+     product =  await Product.find().sort({createdAt:-1}).limit(1)
+    } else if(qCategory){
+      // find from query in DB in field categories and return object with this categories
+      product =  await Product.find({categories:{$in:[qCategory]}})
+    } else {
+      product = await Product.find()
+    }
 
-//     res.send(other);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
-
-// // GET ALL
-// productRouter.get("/", verifyTokenAndAdmin, async (req, res) => {
-//   try {
-//     const query = req.query.new;
-
-//     const users = query
-//       ? await User.find().sort({ _id: -1 }).limit(1)
-//       : await User.find();
-//     // sort({ _id: -1 }).limit(1) - сортування по id найновіший юзер, ліміт 5
-//     // тобто віддати 5 найновіших юзерів
-
-//     res.send(users);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+    res.json(product);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // // GET USER STATS
 
