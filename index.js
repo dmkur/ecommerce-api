@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 const { MONGO_URL, PORT } = require("./config/config");
-const { userRoute, authRoute, productRoute } = require("./routes");
+const { userRoute, authRoute, productRoute, orderRoute } = require("./routes");
 
 const app = express();
 
@@ -24,6 +24,7 @@ app.use("/ping", (req, res) => {
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
+app.use("/api/orders", orderRoute);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
