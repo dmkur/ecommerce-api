@@ -5,4 +5,5 @@ module.exports = {
   userRoute: require('./user.route'),
   verifyToken: require('./verifyToken'),
   productRoute: require('./product.route'),
+  stripeRoute: require('./stripe.route'),
 };
