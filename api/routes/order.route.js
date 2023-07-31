@@ -8,7 +8,7 @@ const { Order } = require('../models');
 
 const orderRouter = Router();
 
-// CREATE
+// CREATE ORDER
 orderRouter.post('/', verifyToken, async (req, res) => {
   const newOrder = new Order(req.body);
 
