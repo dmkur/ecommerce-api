@@ -7,28 +7,12 @@ const {
   JWT_SEC,
   ACCESS_TOKEN_LIFETIME
 } = require('../config/config');
+const { userController } = require('../controllers');
 
 const authRouter = Router();
 
 // REGISTER
-authRouter.post('/register', async (req, res) => {
-  const newUser = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: CryptoJS.AES.encrypt(req.body.password, PAS_SEC)
-      .toString(),
-  });
-
-  try {
-    const savedUser = await newUser.save();
-
-    res.status(201)
-      .json(savedUser);
-  } catch (err) {
-    res.status(500)
-      .json(err);
-  }
-});
+authRouter.post('/register', userController.createUser);
 
 // LOGIN
 authRouter.post('/login', async (req, res) => {

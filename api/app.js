@@ -7,6 +7,7 @@ const { MONGO_URL, PORT } = require('./config/config');
 const {
   userRoute, authRoute, productRoute, orderRoute
 } = require('./routes');
+const { mainErrorHandler } = require('./errors');
 
 const app = express();
 
@@ -27,6 +28,10 @@ app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
 app.use('/api/orders', orderRoute);
+app.use('*', (req, res, next) => {
+  next(new Error('Route not found'));
+});
+app.use(mainErrorHandler);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
