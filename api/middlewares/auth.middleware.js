@@ -15,13 +15,28 @@ module.exports = {
       next(e);
     }
   },
-  // checkTokenAndAuth: (req, res, next) => {
-  //   try {
-  //
-  //
-  //     next();
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // },
+  checkAuthorization: (req, res, next) => {
+    try {
+      console.log(req.user.id.id === req.params.id);
+      console.log(req.user.id.isAdmin);
+      if (req.user.id.id === req.params.id || req.user.id.isAdmin) {
+        next();
+      } else {
+        return next(new CustomErrorHandler("You're not allowed todo that", statusCode.CONFLICT));
+      }
+    } catch (e) {
+      next(e);
+    }
+  },
+  verifyAdmin: (req, res, next) => {
+    try {
+      if (req.user.id.isAdmin) {
+        next();
+      } else {
+        return next(new CustomErrorHandler("You're not allowed todo that", statusCode.CONFLICT));
+      }
+    } catch (e) {
+      next(e);
+    }
+  }
 };

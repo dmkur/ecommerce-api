@@ -4,7 +4,6 @@ const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require('./verifyToken');
-const { PAS_SEC } = require('../config/config');
 const { User } = require('../models');
 const { userController } = require('../controllers');
 const { authMddlwr } = require('../middlewares');
@@ -12,49 +11,35 @@ const { authMddlwr } = require('../middlewares');
 const userRouter = Router();
 
 // UPDATE
-userRouter.put('/:id', authMddlwr.checkAccessToken, userController.updateById);
-
+userRouter.put(
+  '/:id',
+  authMddlwr.checkAccessToken,
+  userController.updateById
+);
 
 // DELETE
-userRouter.delete('/:id', verifyTokenAndAuthorization, async (req, res) => {
-  try {
-    await User.findOneAndDelete(req.params.id);
-
-    res.send('User has been deleted!');
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+userRouter.delete(
+  '/:id',
+  authMddlwr.checkAccessToken,
+  authMddlwr.checkAuthorization,
+  userController.deleteById
+);
 
 // GET BY ID
-userRouter.get('/find/:id', verifyTokenAndAdmin, async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-
-    const { password, ...other } = user._doc;
-
-    res.send(other);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+userRouter.get(
+  '/find/:id',
+  authMddlwr.checkAccessToken,
+  authMddlwr.verifyAdmin,
+  userController.getById
+);
 
 // GET ALL
-userRouter.get('/', verifyTokenAndAdmin, async (req, res) => {
-  try {
-    const query = req.query.new;
-
-    const users = query
-      ? await User.find().sort({ _id: -1 }).limit(1)
-      : await User.find();
-    // sort({ _id: -1 }).limit(1) - сортування по id найновіший юзер, ліміт 5
-    // тобто віддати 5 найновіших юзерів
-
-    res.send(users);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+userRouter.get(
+  '/',
+  authMddlwr.checkAccessToken,
+  authMddlwr.verifyAdmin,
+  userController.getAll
+);
 
 // GET USER STATS
 
