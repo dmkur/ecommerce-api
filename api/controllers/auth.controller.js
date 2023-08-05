@@ -31,6 +31,7 @@ module.exports = {
       // у payload додаємо два праметри, щоб потім їх використати при аунтифікації юзера і його прав
       const accessToken = authService.createAuthTokens({ id: user._id, isAdmin: user.isAdmin });
 
+      // забираємо поле password
       const { password, ...other } = user._doc;
       // чомусь mongoose зберігає цілий файл з різними данними
       // а наш юзер в полі _doc тому доступаємся так
