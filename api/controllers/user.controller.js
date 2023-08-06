@@ -1,5 +1,4 @@
 const { userService, authService } = require('../services');
-const { User } = require('../models');
 
 module.exports = {
   updateById: async (req, res, next) => {
