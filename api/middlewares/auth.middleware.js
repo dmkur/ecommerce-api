@@ -17,8 +17,6 @@ module.exports = {
   },
   checkAuthorization: (req, res, next) => {
     try {
-      console.log(req.user.id.id === req.params.id);
-      console.log(req.user.id.isAdmin);
       if (req.user.id.id === req.params.id || req.user.id.isAdmin) {
         next();
       } else {
