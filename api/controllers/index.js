@@ -1,6 +1,7 @@
 module.exports = {
   authController: require('./auth.controller'),
-  userController: require('./user.controller'),
+  cartController: require('./cart.controller'),
   orderController: require('./order.controller'),
   productController: require('./product.controller'),
+  userController: require('./user.controller'),
 };

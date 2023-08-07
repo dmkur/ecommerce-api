@@ -1,7 +1,8 @@
 module.exports = {
   authService: require('./auth.service'),
-  userService: require('./user.service'),
+  cartService: require('./cart.service'),
   orderService: require('./order.service'),
   productService: require('./product.service'),
+  userService: require('./user.service'),
 
 };

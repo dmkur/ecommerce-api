@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const { MONGO_URL, PORT } = require('./config/config');
 const {
-  userRoute, authRoute, productRoute, orderRoute
+  userRoute, authRoute, productRoute, orderRoute, cartRoute
 } = require('./routes');
 const { mainErrorHandler } = require('./errors');
 
@@ -28,6 +28,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
 app.use('/api/orders', orderRoute);
+app.use('/api/carts', cartRoute);
 app.use('*', (req, res, next) => {
   next(new Error('Route not found'));
 });
