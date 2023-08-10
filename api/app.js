@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
 
 dotenv.config();
 const { MONGO_URL, PORT } = require('./config/config');
@@ -17,6 +18,7 @@ mongoose
   .then(() => console.log('DB connected'))
   .catch((err) => console.log(err));
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
