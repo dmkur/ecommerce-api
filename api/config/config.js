@@ -7,4 +7,5 @@ module.exports = {
   ACCESS_TOKEN_LIFETIME: process.env.ACCESS_TOKEN_LIFETIME || '3d',
 
   STRIPE_KEY: process.env.STRIPE_KEY || 'dmkur',
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || 'dmkur',
 };

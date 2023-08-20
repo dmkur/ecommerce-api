@@ -6,7 +6,7 @@ const cors = require('cors');
 dotenv.config();
 const { MONGO_URL, PORT } = require('./config/config');
 const {
-  userRoute, authRoute, productRoute, orderRoute, cartRoute
+  userRoute, authRoute, productRoute, orderRoute, cartRoute, stripeRoute
 } = require('./routes');
 const { mainErrorHandler } = require('./errors');
 
@@ -31,6 +31,7 @@ app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
 app.use('/api/orders', orderRoute);
 app.use('/api/carts', cartRoute);
+app.use('/api/checkout', stripeRoute);
 app.use('*', (req, res, next) => {
   next(new Error('Route not found'));
 });
