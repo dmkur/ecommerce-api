@@ -8,6 +8,7 @@ const userRouter = Router();
 userRouter.put(
   '/:id',
   authMddlwr.checkAccessToken,
+  authMddlwr.checkAuthorization,
   userController.updateById
 );
 
@@ -38,6 +39,8 @@ userRouter.get(
 // GET USER STATS
 userRouter.get(
   '/stats',
+  authMddlwr.checkAccessToken,
+  authMddlwr.verifyAdmin,
   userController.getUserStats
 );
 

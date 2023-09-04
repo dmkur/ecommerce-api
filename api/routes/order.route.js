@@ -5,7 +5,11 @@ const { orderController } = require('../controllers');
 const orderRouter = Router();
 
 // CREATE ORDER
-orderRouter.post('/', authMddlwr.checkAccessToken, orderController.create);
+orderRouter.post(
+  '/',
+  authMddlwr.checkAccessToken,
+  orderController.create
+);
 
 // UPDATE
 orderRouter.put(
@@ -27,7 +31,8 @@ orderRouter.delete(
 orderRouter.get(
   '/find/:userId',
   authMddlwr.checkAccessToken,
-  orderController.getUserOrderById
+  authMddlwr.checkAuthorization,
+  orderController.getUserOrdersById
 );
 
 // GET ALL

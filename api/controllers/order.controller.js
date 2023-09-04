@@ -30,7 +30,7 @@ module.exports = {
       next(e);
     }
   },
-  getUserOrderById: async (req, res, next) => {
+  getUserOrdersById: async (req, res, next) => {
     try {
       const order = await orderService.find({ userId: req.params.id });
 

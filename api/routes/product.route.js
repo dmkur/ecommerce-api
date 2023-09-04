@@ -8,7 +8,7 @@ const productRouter = Router();
 productRouter.post(
   '/',
   authMddlwr.checkAccessToken,
-  authMddlwr.checkAuthorization,
+  authMddlwr.verifyAdmin,
   productController.create
 );
 
