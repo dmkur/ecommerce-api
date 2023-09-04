@@ -41,7 +41,7 @@ module.exports = {
       const query = req.query.new;
 
       const users = query
-        ? await userService.find().sort({ _id: -1 }).limit(1)
+        ? await userService.find().sort({ _id: -1 }).limit(5)
         : await userService.find();
       // sort({ _id: -1 }).limit(1) - сортування по id найновіший юзер, ліміт 5
       // тобто віддати 5 найновіших юзерів
