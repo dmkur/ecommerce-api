@@ -7,23 +7,23 @@ const cartRouter = Router();
 // CREATE
 cartRouter.post(
   '/',
-  authMddlwr.checkAccessToken,
+  authMddlwr.checkIsAccessToken,
   cartController.create
 );
 
 // UPDATE
 cartRouter.put(
   '/:id',
-  authMddlwr.checkAccessToken,
-  authMddlwr.checkAuthorization,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkAuthorizationOrIsAdmin,
   cartController.updateById
 );
 
 // DELETE
 cartRouter.delete(
   '/:id',
-  authMddlwr.checkAccessToken,
-  authMddlwr.checkAuthorization,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkAuthorizationOrIsAdmin,
   cartController.deleteById
 );
 
@@ -31,16 +31,16 @@ cartRouter.delete(
 
 cartRouter.get(
   '/find/:userId',
-  authMddlwr.checkAccessToken,
-  authMddlwr.checkAuthorization,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkAuthorizationOrIsAdmin,
   cartController.getCartByUserId
 );
 
 // GET ALL
 cartRouter.get(
   '/',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   cartController.getAll
 );
 

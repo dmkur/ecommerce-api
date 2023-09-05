@@ -7,24 +7,24 @@ const productRouter = Router();
 // CREATE
 productRouter.post(
   '/',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   productController.create
 );
 
 // UPDATE
 productRouter.put(
   '/:id',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   productController.updateById
 );
 
 // DELETE
 productRouter.delete(
   '/:id',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   productController.deleteById
 );
 
