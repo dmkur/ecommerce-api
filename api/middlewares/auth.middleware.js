@@ -3,7 +3,7 @@ const { CustomErrorHandler } = require('../errors');
 const { authService } = require('../services');
 
 module.exports = {
-  checkAccessToken: (req, res, next) => {
+  checkIsAccessToken: (req, res, next) => {
     try {
       const token = req.get(constants.AUTHORIZATION);
       if (!token) return next(new CustomErrorHandler('No token', statusCode.UNAUTHORIZED));
@@ -15,7 +15,7 @@ module.exports = {
       next(e);
     }
   },
-  checkAuthorization: (req, res, next) => {
+  checkAuthorizationOrIsAdmin: (req, res, next) => {
     try {
       if (req.user.id.id === req.params.id || req.user.id.isAdmin) {
         next();
@@ -26,7 +26,7 @@ module.exports = {
       next(e);
     }
   },
-  verifyAdmin: (req, res, next) => {
+  checkIsAdmin: (req, res, next) => {
     try {
       if (req.user.id.isAdmin) {
         next();

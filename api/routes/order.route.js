@@ -7,47 +7,47 @@ const orderRouter = Router();
 // CREATE ORDER
 orderRouter.post(
   '/',
-  authMddlwr.checkAccessToken,
+  authMddlwr.checkIsAccessToken,
   orderController.create
 );
 
 // UPDATE
 orderRouter.put(
   '/:id',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   orderController.updateById
 );
 
 // DELETE
 orderRouter.delete(
   '/:id',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   orderController.deleteById
 );
 
 // GET USER Orders
 orderRouter.get(
   '/find/:userId',
-  authMddlwr.checkAccessToken,
-  authMddlwr.checkAuthorization,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkAuthorizationOrIsAdmin,
   orderController.getUserOrdersById
 );
 
 // GET ALL
 orderRouter.get(
   '/',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   orderController.getAll
 );
 
 // get monthly income
 orderRouter.get(
   '/income',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   orderController.income
 );
 

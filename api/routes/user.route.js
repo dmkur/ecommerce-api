@@ -7,40 +7,40 @@ const userRouter = Router();
 // UPDATE
 userRouter.put(
   '/:id',
-  authMddlwr.checkAccessToken,
-  authMddlwr.checkAuthorization,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkAuthorizationOrIsAdmin,
   userController.updateById
 );
 
 // DELETE
 userRouter.delete(
   '/:id',
-  authMddlwr.checkAccessToken,
-  authMddlwr.checkAuthorization,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkAuthorizationOrIsAdmin,
   userController.deleteById
 );
 
 // GET BY ID
 userRouter.get(
   '/find/:id',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   userController.getById
 );
 
 // GET ALL
 userRouter.get(
   '/',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   userController.getAll
 );
 
 // GET USER STATS
 userRouter.get(
   '/stats',
-  authMddlwr.checkAccessToken,
-  authMddlwr.verifyAdmin,
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
   userController.getUserStats
 );
 
