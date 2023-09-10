@@ -50,7 +50,9 @@ module.exports = {
   },
   income: async (req, res, next) => {
     try {
-      const data = await orderService.stats();
+      const productId = req.query.pid;
+      console.log(productId)
+      const data = await orderService.stats(productId);
 
       res.json(data);
     } catch (e) {
