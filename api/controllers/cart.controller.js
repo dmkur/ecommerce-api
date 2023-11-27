@@ -1,12 +1,12 @@
 const { cartService } = require('../services');
-const { statusCode } = require('../constants');
+const { statusCodeENUM } = require('../constants');
 
 module.exports = {
   create: async (req, res, next) => {
     try {
       const newCart = await cartService.create(req.body);
 
-      res.status(statusCode.CREATE).json(newCart);
+      res.status(statusCodeENUM.CREATE).json(newCart);
     } catch (e) {
       next(e);
     }

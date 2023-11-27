@@ -1,8 +1,8 @@
 const CryptoJS = require('crypto-js');
 const jwt = require('jsonwebtoken');
 const { PAS_SEC, JWT_SEC, ACCESS_TOKEN_LIFETIME } = require('../config/config');
-const { User } = require('../models');
-const { statusCode } = require('../constants');
+const { User } = require('../db');
+const { statusCodeENUM } = require('../constants');
 const { CustomErrorHandler } = require('../errors');
 
 module.exports = {
@@ -15,7 +15,8 @@ module.exports = {
     try {
       return jwt.verify(token, JWT_SEC);
     } catch (e) {
-      throw new CustomErrorHandler('Token is not valid', statusCode.UNAUTHORIZED);
+      throw new CustomErrorHandler('Token is not valid', statusCodeENUM.UNAUTHORIZED);
     }
-  }
+  },
+
 };

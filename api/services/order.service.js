@@ -1,4 +1,4 @@
-const { Order } = require('../models');
+const { Order } = require('../db');
 
 module.exports = {
   create: (orderObj) => Order.create(orderObj),

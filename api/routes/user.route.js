@@ -4,7 +4,33 @@ const { authMddlwr } = require('../middlewares');
 
 const userRouter = Router();
 
-// UPDATE
+userRouter.get(
+    '/',
+    authMddlwr.checkIsAccessToken,
+    authMddlwr.checkIsAdmin,
+    userController.getAll
+);
+
+userRouter.post(
+    "/",
+    userController.createNewUser
+);
+
+userRouter.get(
+    '/find/:id',
+    authMddlwr.checkIsAccessToken,
+    authMddlwr.checkIsAdmin,
+    userController.getById
+);
+
+userRouter.get(
+    '/stats',
+    authMddlwr.checkIsAccessToken,
+    authMddlwr.checkIsAdmin,
+    userController.getUserStats
+);
+
+
 userRouter.put(
   '/:id',
   authMddlwr.checkIsAccessToken,
@@ -12,36 +38,12 @@ userRouter.put(
   userController.updateById
 );
 
-// DELETE
+
 userRouter.delete(
   '/:id',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkAuthorizationOrIsAdmin,
   userController.deleteById
-);
-
-// GET BY ID
-userRouter.get(
-  '/find/:id',
-  authMddlwr.checkIsAccessToken,
-  authMddlwr.checkIsAdmin,
-  userController.getById
-);
-
-// GET ALL
-userRouter.get(
-  '/',
-  authMddlwr.checkIsAccessToken,
-  authMddlwr.checkIsAdmin,
-  userController.getAll
-);
-
-// GET USER STATS
-userRouter.get(
-  '/stats',
-  authMddlwr.checkIsAccessToken,
-  authMddlwr.checkIsAdmin,
-  userController.getUserStats
 );
 
 module.exports = userRouter;

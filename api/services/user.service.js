@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User } = require('../db');
 
 module.exports = {
   create: (userObj) => User.create(userObj),
