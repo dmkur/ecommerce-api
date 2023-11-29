@@ -6,6 +6,7 @@ module.exports = {
   deleteById: (id) => User.findOneAndDelete(id),
   getById: (id) => User.findById(id),
   find: () => User.find(),
+  findOneByParams: (filter = {}) => User.findOne(filter),
   stats: () => {
     // current date
     const date = new Date();
