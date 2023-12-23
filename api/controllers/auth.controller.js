@@ -1,7 +1,7 @@
-const { userService, authService, tokenService } = require("../services");
-const { statusCodeENUM } = require("../constants");
-const { CustomErrorHandler } = require("../errors");
-const { PAS_SEC } = require("../config/config");
+const { userService, authService, tokenService } = require('../services');
+const { statusCodeENUM } = require('../constants');
+const { CustomErrorHandler } = require('../errors');
+const { PAS_SEC } = require('../config/config');
 
 module.exports = {
   login: async (req, res, next) => {
@@ -22,14 +22,11 @@ module.exports = {
   },
   logout: async (req, res, next) => {
     try {
-      // const { password } = req.body;
-      // const { password: hashedPassword, _id } = req.user;
+      const { user, access_token } = req.tokenInfo;
 
-      // await tokenService.comparePassword(password, hashedPassword);
+      await authService.deleteOneByParams({ user: user._id, access_token });
 
-      // const authTokens = tokenService.createAuthTokens({ _id });
-
-      res.json("logout");
+      res.sendStatus(statusCodeENUM.NO_CONTENT);
     } catch (e) {
       next(e);
     }
