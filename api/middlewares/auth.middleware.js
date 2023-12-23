@@ -1,30 +1,48 @@
-const { constants, statusCodeENUM } = require('../constants');
-const { CustomErrorHandler } = require('../errors');
-const { authService } = require('../services');
+const { constants, statusCodeENUM } = require("../constants");
+const { CustomErrorHandler } = require("../errors");
+const { authService, tokenService } = require("../services");
 
 module.exports = {
-  checkIsAccessToken: (req, res, next) => {
+  checkIsAccessToken: async (req, res, next) => {
     try {
-      const token = req.get(constants.AUTHORIZATION);
-      if (!token) return next(new CustomErrorHandler('No token', statusCodeENUM.UNAUTHORIZED));
+      const access_token = req.get(constants.AUTHORIZATION);
 
-      req.user = authService.checkToken(token);
+      if (!access_token)
+        return next(
+          new CustomErrorHandler("No token", statusCodeENUM.UNAUTHORIZED),
+        );
+
+      tokenService.checkToken(access_token);
+
+      const tokenInfo = await authService.findOneWithUser({ access_token });
+
+      if (!tokenInfo)
+        return next(
+          new CustomErrorHandler("Not Found", statusCodeENUM.UNAUTHORIZED),
+        );
+
+      req.tokenInfo = tokenInfo;
 
       next();
     } catch (e) {
       next(e);
     }
   },
-  checkIsRefreshToken:(req,res, next) => {
+  checkIsRefreshToken: (req, res, next) => {
     try {
-      const {refresh_token} = req.body;
+      const { refresh_token } = req.body;
 
-      if(!refresh_token) return next(new CustomErrorHandler('Token is absent',statusCodeENUM.UNAUTHORIZED))
+      if (!refresh_token)
+        return next(
+          new CustomErrorHandler(
+            "Token is absent",
+            statusCodeENUM.UNAUTHORIZED,
+          ),
+        );
 
-
-      next()
-    }catch (e) {
-      next(e)
+      next();
+    } catch (e) {
+      next(e);
     }
   },
   checkAuthorizationOrIsAdmin: (req, res, next) => {
@@ -32,7 +50,12 @@ module.exports = {
       if (req.user.id.id === req.params.id || req.user.id.isAdmin) {
         next();
       } else {
-        return next(new CustomErrorHandler("You're not allowed todo that", statusCodeENUM.CONFLICT));
+        return next(
+          new CustomErrorHandler(
+            "You're not allowed todo that",
+            statusCodeENUM.CONFLICT,
+          ),
+        );
       }
     } catch (e) {
       next(e);
@@ -43,10 +66,15 @@ module.exports = {
       if (req.user.id.isAdmin) {
         next();
       } else {
-        return next(new CustomErrorHandler("You're not allowed todo that", statusCodeENUM.CONFLICT));
+        return next(
+          new CustomErrorHandler(
+            "You're not allowed todo that",
+            statusCodeENUM.CONFLICT,
+          ),
+        );
       }
     } catch (e) {
       next(e);
     }
-  }
+  },
 };
