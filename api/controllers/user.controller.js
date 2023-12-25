@@ -1,5 +1,5 @@
-const { userService, authService, tokenService} = require('../services');
-const {statusCodeENUM} = require("../constants");
+const { userService, authService, tokenService } = require('../services');
+const { statusCodeENUM } = require('../constants');
 
 module.exports = {
   updateById: async (req, res, next) => {
@@ -7,7 +7,7 @@ module.exports = {
       const { password } = req.body;
       // якщо це password знову його шифруємо
       if (password) {
-        req.body.password = authService.hashedPasswords(password).toString();
+        req.body.password = authService.hashPassword(password).toString();
       }
 
       const updatedUser = await userService.updateById(req.params.id, req.body);
@@ -63,7 +63,7 @@ module.exports = {
   },
   createNewUser: async (req, res, next) => {
     try {
-      const hashedPassword = await tokenService.hashPassword(req.body.password);
+      const hashedPassword = await authService.hashPassword(req.body.password);
 
       const newUser = await userService.create({ ...req.body, password: hashedPassword });
 

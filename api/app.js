@@ -32,10 +32,10 @@ app.use('*', (req, res, next) => {
 app.use(mainErrorHandler);
 
 app.listen(PORT, () => {
-  console.log('Server is running on port', PORT);
+  console.log('Server is running. Port:', PORT);
 
   mongoose.set('strictQuery', false);
   mongoose.connect(MONGO_URL)
-      .then(() => console.log('DB connected'))
-      .catch((err) => console.log(err));
+    .then(() => console.log('DB connected'))
+    .catch((err) => console.log(err));
 });

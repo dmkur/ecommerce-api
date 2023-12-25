@@ -1,7 +1,5 @@
-const { userService, authService, tokenService } = require('../services');
+const { authService, tokenService } = require('../services');
 const { statusCodeENUM } = require('../constants');
-const { CustomErrorHandler } = require('../errors');
-const { PAS_SEC } = require('../config/config');
 
 module.exports = {
   login: async (req, res, next) => {
@@ -9,7 +7,7 @@ module.exports = {
       const { password } = req.body;
       const { password: hashedPassword, _id } = req.user;
 
-      await tokenService.comparePassword(password, hashedPassword);
+      await authService.comparePassword(password, hashedPassword);
 
       const authTokens = tokenService.createAuthTokens({ _id });
 
