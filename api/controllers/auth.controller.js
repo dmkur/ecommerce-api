@@ -5,15 +5,15 @@ module.exports = {
   login: async (req, res, next) => {
     try {
       const { password } = req.body;
-      const { password: hashedPassword, _id } = req.user;
+      const { password: hashedPassword, _id, isAdmin } = req.user;
 
       await authService.comparePassword(password, hashedPassword);
 
       const authTokens = tokenService.createAuthTokens({ _id });
 
-      tokenService.saveTokens({ ...authTokens, user: _id });
+      tokenService.saveTokens({ ...authTokens, user: _id, isAdmin });
 
-      res.json({ ...authTokens, user: _id });
+      res.json({ ...authTokens, user: _id, isAdmin });
     } catch (e) {
       next(e);
     }

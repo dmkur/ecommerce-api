@@ -5,31 +5,30 @@ const { authMddlwr } = require('../middlewares');
 const userRouter = Router();
 
 userRouter.get(
-    '/',
-    authMddlwr.checkIsAccessToken,
-    authMddlwr.checkIsAdmin,
-    userController.getAll
+  '/',
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
+  userController.getAll
 );
 
 userRouter.post(
-    "/",
-    userController.createNewUser
+  '/',
+  userController.createNewUser
 );
 
 userRouter.get(
-    '/find/:id',
-    authMddlwr.checkIsAccessToken,
-    authMddlwr.checkIsAdmin,
-    userController.getById
+  '/find/:id',
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
+  userController.getById
 );
 
 userRouter.get(
-    '/stats',
-    authMddlwr.checkIsAccessToken,
-    authMddlwr.checkIsAdmin,
-    userController.getUserStats
+  '/stats',
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
+  userController.getUserStats
 );
-
 
 userRouter.put(
   '/:id',
@@ -37,7 +36,6 @@ userRouter.put(
   authMddlwr.checkAuthorizationOrIsAdmin,
   userController.updateById
 );
-
 
 userRouter.delete(
   '/:id',

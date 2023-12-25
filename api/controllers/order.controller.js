@@ -51,7 +51,7 @@ module.exports = {
   income: async (req, res, next) => {
     try {
       const productId = req.query.pid;
-      console.log(productId)
+      console.log(productId);
       const data = await orderService.stats(productId);
 
       res.json(data);

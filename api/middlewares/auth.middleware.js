@@ -22,7 +22,6 @@ module.exports = {
           new CustomErrorHandler('Not Found', statusCodeENUM.UNAUTHORIZED),
         );
       }
-
       req.tokenInfo = tokenInfo;
 
       next();
@@ -66,7 +65,7 @@ module.exports = {
   },
   checkIsAdmin: (req, res, next) => {
     try {
-      if (req.user.id.isAdmin) {
+      if (req.tokenInfo.isAdmin) {
         next();
       } else {
         return next(
