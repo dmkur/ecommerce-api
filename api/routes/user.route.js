@@ -27,20 +27,20 @@ userRouter.get(
   '/stats',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkIsAdmin,
-  userController.getUserStats
+  userController.getStatsUsersForLast2Month
 );
 
 userRouter.put(
   '/:id',
   authMddlwr.checkIsAccessToken,
-  authMddlwr.checkAuthorizationOrIsAdmin,
+  authMddlwr.checkAuthOrIsAdmin,
   userController.updateById
 );
 
 userRouter.delete(
   '/:id',
   authMddlwr.checkIsAccessToken,
-  authMddlwr.checkAuthorizationOrIsAdmin,
+  authMddlwr.checkAuthOrIsAdmin,
   userController.deleteById
 );
 

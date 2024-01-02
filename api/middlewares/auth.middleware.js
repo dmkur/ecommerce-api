@@ -47,9 +47,9 @@ module.exports = {
       next(e);
     }
   },
-  checkAuthorizationOrIsAdmin: (req, res, next) => {
+  checkAuthOrIsAdmin: (req, res, next) => {
     try {
-      if (req.user.id.id === req.params.id || req.user.id.isAdmin) {
+      if (req.tokenInfo.user === req.params.id || req.tokenInfo.isAdmin) {
         next();
       } else {
         return next(

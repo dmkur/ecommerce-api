@@ -1,4 +1,4 @@
-const { userService, authService, tokenService } = require('../services');
+const { userService, authService} = require('../services');
 const { statusCodeENUM } = require('../constants');
 
 module.exports = {
@@ -52,7 +52,7 @@ module.exports = {
       next(e);
     }
   },
-  getUserStats: async (req, res, next) => {
+  getStatsUsersForLast2Month: async (req, res, next) => {
     try {
       const data = await userService.stats();
 
