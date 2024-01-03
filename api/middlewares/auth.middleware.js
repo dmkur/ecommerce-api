@@ -53,7 +53,8 @@ module.exports = {
         req.tokenInfo.user.toString() === req.params.id ||
         req.tokenInfo.isAdmin
       ) {
-        // add toString() coz without mongo return ObjectId("dkfksdjfdskjfsfkj")
+        // add toString() coz without, mongo return ObjectId("dkfksdjfdskjfsfkj")
+
         next();
       } else {
         return next(
