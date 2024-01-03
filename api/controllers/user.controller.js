@@ -1,4 +1,4 @@
-const { userService, authService} = require('../services');
+const { userService, authService } = require('../services');
 const { statusCodeENUM } = require('../constants');
 
 module.exports = {

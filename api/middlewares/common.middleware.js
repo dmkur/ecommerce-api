@@ -1,5 +1,5 @@
-const { statusCodeENUM } = require("../constants");
-const { CustomErrorHandler } = require("../errors");
+const { statusCodeENUM } = require('../constants');
+const { CustomErrorHandler } = require('../errors');
 
 module.exports = {
   checkIsBodyValid: (validatorType) => (req, res, next) => {

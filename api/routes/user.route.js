@@ -1,35 +1,35 @@
-const { Router } = require("express");
-const { userController } = require("../controllers");
-const { authMddlwr, commonMddlwr } = require("../middlewares");
-const { updateUserValidation } = require("../validators/user.validator");
+const { Router } = require('express');
+const { userController } = require('../controllers');
+const { authMddlwr, commonMddlwr } = require('../middlewares');
+const { updateUserValidation } = require('../validators/user.validator');
 
 const userRouter = Router();
 
 userRouter.get(
-  "/",
+  '/',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkIsAdmin,
   userController.getAll,
 );
 
-userRouter.post("/", userController.createNewUser);
+userRouter.post('/', userController.createNewUser);
 
 userRouter.get(
-  "/find/:id",
+  '/find/:id',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkIsAdmin,
   userController.getById,
 );
 
 userRouter.get(
-  "/stats",
+  '/stats',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkIsAdmin,
   userController.getStatsUsersForLast2Month,
 );
 
 userRouter.put(
-  "/:id",
+  '/:id',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkAuthOrIsAdmin,
   commonMddlwr.checkIsBodyValid(updateUserValidation),
@@ -37,7 +37,7 @@ userRouter.put(
 );
 
 userRouter.delete(
-  "/:id",
+  '/:id',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkAuthOrIsAdmin,
   userController.deleteById,
