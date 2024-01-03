@@ -70,4 +70,5 @@ module.exports = {
   loginUserValidator,
   userEmailValidator,
   userPasswordValidator,
+  newUserValidator
 };

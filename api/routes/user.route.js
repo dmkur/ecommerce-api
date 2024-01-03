@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { userController } = require('../controllers');
 const { authMddlwr, commonMddlwr } = require('../middlewares');
-const { updateUserValidation } = require('../validators/user.validator');
+const { updateUserValidation, newUserValidator } = require('../validators/user.validator');
 
 const userRouter = Router();
 
@@ -12,7 +12,11 @@ userRouter.get(
   userController.getAll,
 );
 
-userRouter.post('/', userController.createNewUser);
+userRouter.post(
+  '/',
+  commonMddlwr.checkIsBodyValid(newUserValidator),
+  userController.createNewUser
+);
 
 userRouter.get(
   '/find/:id',

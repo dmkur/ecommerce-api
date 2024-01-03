@@ -16,4 +16,18 @@ authRouter.post(
   authController.logout,
 );
 
+authRouter.put(
+  '/assignAdmin/:id',
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
+  authMddlwr.checkIsNotAdmin,
+  authController.assignStatusAdmin
+);
+
+// authRouter.put(
+//     '/removeAdmin/:id',
+//     authMddlwr.checkIsAccessToken,
+//     authController.,
+// );
+
 module.exports = authRouter;

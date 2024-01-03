@@ -1,4 +1,4 @@
-const { authService, tokenService } = require('../services');
+const { authService, tokenService, userService} = require('../services');
 const { statusCodeENUM } = require('../constants');
 
 module.exports = {
@@ -25,6 +25,16 @@ module.exports = {
       await authService.deleteOneByParams({ user: user._id, access_token });
 
       res.sendStatus(statusCodeENUM.NO_CONTENT);
+    } catch (e) {
+      next(e);
+    }
+  },
+  assignStatusAdmin: async (req, res, next) => {
+    try {
+      const { id } = req.possibleAdmin;
+      const newUser = await userService.updateById(id, req.body);
+
+      res.json(newUser);
     } catch (e) {
       next(e);
     }

@@ -14,6 +14,7 @@ module.exports = {
       );
     }
   },
-  findOneWithUser: (access_token) => Auth.findOne(access_token),
+  findOne: (access_token) => Auth.findOne(access_token),
+  updateStatus: (id, newData) => Auth.findByIdAndUpdate(id, newData, { new: true }),
   deleteOneByParams: (filter) => Auth.deleteOne(filter)
 };

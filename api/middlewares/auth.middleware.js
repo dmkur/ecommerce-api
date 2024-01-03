@@ -1,6 +1,6 @@
 const { constants, statusCodeENUM } = require('../constants');
 const { CustomErrorHandler } = require('../errors');
-const { authService, tokenService } = require('../services');
+const { authService, tokenService, userService } = require('../services');
 
 module.exports = {
   checkIsAccessToken: async (req, res, next) => {
@@ -15,7 +15,7 @@ module.exports = {
 
       tokenService.checkToken(access_token);
 
-      const tokenInfo = await authService.findOneWithUser({ access_token });
+      const tokenInfo = await authService.findOne({ access_token });
 
       if (!tokenInfo) {
         return next(
@@ -80,6 +80,23 @@ module.exports = {
           ),
         );
       }
+    } catch (e) {
+      next(e);
+    }
+  },
+  checkIsNotAdmin: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const user = await userService.getById(id);
+
+      if (!user) next(new CustomErrorHandler('Not found', statusCodeENUM.NOT_FOUND));
+
+      if (user.isAdmin) next(new CustomErrorHandler('User already have admin status'));
+
+      req.possibleAdmin = user;
+
+      next();
     } catch (e) {
       next(e);
     }
