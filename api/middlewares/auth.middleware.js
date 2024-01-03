@@ -1,6 +1,6 @@
-const { constants, statusCodeENUM } = require('../constants');
-const { CustomErrorHandler } = require('../errors');
-const { authService, tokenService } = require('../services');
+const { constants, statusCodeENUM } = require("../constants");
+const { CustomErrorHandler } = require("../errors");
+const { authService, tokenService } = require("../services");
 
 module.exports = {
   checkIsAccessToken: async (req, res, next) => {
@@ -9,7 +9,7 @@ module.exports = {
 
       if (!access_token) {
         return next(
-          new CustomErrorHandler('No token', statusCodeENUM.UNAUTHORIZED),
+          new CustomErrorHandler("No token", statusCodeENUM.UNAUTHORIZED),
         );
       }
 
@@ -19,7 +19,7 @@ module.exports = {
 
       if (!tokenInfo) {
         return next(
-          new CustomErrorHandler('Not Found', statusCodeENUM.UNAUTHORIZED),
+          new CustomErrorHandler("Not Found", statusCodeENUM.UNAUTHORIZED),
         );
       }
       req.tokenInfo = tokenInfo;
@@ -36,7 +36,7 @@ module.exports = {
       if (!refresh_token) {
         return next(
           new CustomErrorHandler(
-            'Token is absent',
+            "Token is absent",
             statusCodeENUM.UNAUTHORIZED,
           ),
         );
@@ -49,7 +49,11 @@ module.exports = {
   },
   checkAuthOrIsAdmin: (req, res, next) => {
     try {
-      if (req.tokenInfo.user === req.params.id || req.tokenInfo.isAdmin) {
+      if (
+        req.tokenInfo.user.toString() === req.params.id ||
+        req.tokenInfo.isAdmin
+      ) {
+        // add toString() coz without mongo return ObjectId("dkfksdjfdskjfsfkj")
         next();
       } else {
         return next(
