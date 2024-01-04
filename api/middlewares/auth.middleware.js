@@ -103,7 +103,6 @@ module.exports = {
             );
           break;
         case "notAdmin":
-          console.log(!user.isAdmin, "V2");
           if (!user.isAdmin)
             next(
               new CustomErrorHandler(

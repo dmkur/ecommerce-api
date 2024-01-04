@@ -32,7 +32,9 @@ module.exports = {
   changeAdminStatus: async (req, res, next) => {
     try {
       const { id, isAdmin } = req.possibleAdmin;
+
       const newUser = await userService.updateById(id, { isAdmin: !isAdmin });
+      await authService.deleteMany({ user: id });
 
       res.json(newUser);
     } catch (e) {
