@@ -1,5 +1,5 @@
-const { authService, tokenService, userService} = require('../services');
-const { statusCodeENUM } = require('../constants');
+const { authService, tokenService, userService } = require("../services");
+const { statusCodeENUM } = require("../constants");
 
 module.exports = {
   login: async (req, res, next) => {
@@ -29,10 +29,10 @@ module.exports = {
       next(e);
     }
   },
-  assignStatusAdmin: async (req, res, next) => {
+  changeAdminStatus: async (req, res, next) => {
     try {
-      const { id } = req.possibleAdmin;
-      const newUser = await userService.updateById(id, req.body);
+      const { id, isAdmin } = req.possibleAdmin;
+      const newUser = await userService.updateById(id, { isAdmin: !isAdmin });
 
       res.json(newUser);
     } catch (e) {

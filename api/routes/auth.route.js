@@ -1,33 +1,34 @@
-const { Router } = require('express');
-const { authController } = require('../controllers');
-const { userMddlwr, authMddlwr } = require('../middlewares');
+const { Router } = require("express");
+const { authController } = require("../controllers");
+const { userMddlwr, authMddlwr } = require("../middlewares");
 
 const authRouter = Router();
 
 authRouter.post(
-  '/login',
+  "/login",
   userMddlwr.getUserByDynemicParams(),
   authController.login,
 );
 
 authRouter.post(
-  '/logout',
+  "/logout",
   authMddlwr.checkIsAccessToken,
   authController.logout,
 );
 
 authRouter.put(
-  '/assignAdmin/:id',
+  "/assignAdmin/:id",
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkIsAdmin,
-  authMddlwr.checkIsNotAdmin,
-  authController.assignStatusAdmin
+  authMddlwr.checkUserAdminStatus("admin"),
+  authController.changeAdminStatus,
 );
 
-// authRouter.put(
-//     '/removeAdmin/:id',
-//     authMddlwr.checkIsAccessToken,
-//     authController.,
-// );
+authRouter.put(
+  "/removeAdmin/:id",
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkUserAdminStatus("notAdmin"),
+  authController.changeAdminStatus,
+);
 
 module.exports = authRouter;
