@@ -1,13 +1,13 @@
 const { productService } = require('../services');
-const { statusCode } = require('../constants');
-const { Product } = require('../models');
+const { statusCodeENUM } = require('../constants');
+const { Product } = require('../db');
 
 module.exports = {
   create: async (req, res, next) => {
     try {
       const newProduct = await productService.create(req.body);
 
-      res.status(statusCode.CREATE).json(newProduct);
+      res.status(statusCodeENUM.CREATE).json(newProduct);
     } catch (e) {
       next(e);
     }

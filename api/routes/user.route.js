@@ -1,47 +1,51 @@
 const { Router } = require('express');
 const { userController } = require('../controllers');
-const { authMddlwr } = require('../middlewares');
+const { authMddlwr, commonMddlwr, userMddlwr} = require('../middlewares');
+const { updateUserValidation, newUserValidator } = require('../validators/user.validator');
 
 const userRouter = Router();
 
-// UPDATE
-userRouter.put(
-  '/:id',
-  authMddlwr.checkIsAccessToken,
-  authMddlwr.checkAuthorizationOrIsAdmin,
-  userController.updateById
-);
-
-// DELETE
-userRouter.delete(
-  '/:id',
-  authMddlwr.checkIsAccessToken,
-  authMddlwr.checkAuthorizationOrIsAdmin,
-  userController.deleteById
-);
-
-// GET BY ID
-userRouter.get(
-  '/find/:id',
-  authMddlwr.checkIsAccessToken,
-  authMddlwr.checkIsAdmin,
-  userController.getById
-);
-
-// GET ALL
 userRouter.get(
   '/',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkIsAdmin,
-  userController.getAll
+  userController.getAll,
 );
 
-// GET USER STATS
+userRouter.post(
+  '/',
+  commonMddlwr.checkIsBodyValid(newUserValidator),
+  userController.createNewUser
+);
+
+userRouter.get(
+  '/find/:id',
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkIsAdmin,
+  userController.getById,
+);
+
 userRouter.get(
   '/stats',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkIsAdmin,
-  userController.getUserStats
+  userController.getStatsUsersForLast2Month,
+);
+
+userRouter.put(
+  '/:id',
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkAuthOrIsAdmin,
+  commonMddlwr.checkIsBodyValid(updateUserValidation),
+  userController.updateById,
+);
+
+userRouter.delete(
+  '/:id',
+  authMddlwr.checkIsAccessToken,
+  authMddlwr.checkAuthOrIsAdmin,
+  userMddlwr.isUserPresent(),
+  userController.deleteById,
 );
 
 module.exports = userRouter;

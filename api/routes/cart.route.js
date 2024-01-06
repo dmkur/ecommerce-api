@@ -15,7 +15,7 @@ cartRouter.post(
 cartRouter.put(
   '/:id',
   authMddlwr.checkIsAccessToken,
-  authMddlwr.checkAuthorizationOrIsAdmin,
+  authMddlwr.checkAuthOrIsAdmin,
   cartController.updateById
 );
 
@@ -23,7 +23,7 @@ cartRouter.put(
 cartRouter.delete(
   '/:id',
   authMddlwr.checkIsAccessToken,
-  authMddlwr.checkAuthorizationOrIsAdmin,
+  authMddlwr.checkAuthOrIsAdmin,
   cartController.deleteById
 );
 
@@ -32,7 +32,7 @@ cartRouter.delete(
 cartRouter.get(
   '/find/:userId',
   authMddlwr.checkIsAccessToken,
-  authMddlwr.checkAuthorizationOrIsAdmin,
+  authMddlwr.checkAuthOrIsAdmin,
   cartController.getCartByUserId
 );
 

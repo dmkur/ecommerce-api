@@ -1,4 +1,4 @@
-const { Product } = require('../models');
+const { Product } = require('../db');
 
 module.exports = {
   create: (productObj) => Product.create(productObj),

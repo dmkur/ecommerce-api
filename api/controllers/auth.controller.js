@@ -1,45 +1,44 @@
-const { userService, authService } = require('../services');
-const { statusCode } = require('../constants');
-const { CustomErrorHandler } = require('../errors');
-const { PAS_SEC } = require('../config/config');
+const { authService, tokenService, userService } = require('../services');
+const { statusCodeENUM } = require('../constants');
 
 module.exports = {
-  register: async (req, res, next) => {
+  login: async (req, res, next) => {
     try {
-      const hashedPass = await authService.hashedPasswords(req.body.password);
+      const { password } = req.body;
+      const { password: hashedPassword, _id, isAdmin } = req.user;
 
-      const newUser = await userService.create({ ...req.body, password: hashedPass });
+      await authService.comparePassword(password, hashedPassword);
 
-      res.status(statusCode.CREATE).json(newUser);
+      const authTokens = tokenService.createAuthTokens({ _id });
+
+      tokenService.saveTokens({ ...authTokens, user: _id, isAdmin });
+
+      res.json({ ...authTokens, user: _id, isAdmin });
     } catch (e) {
       next(e);
     }
   },
-
-  login: async (req, res, next) => {
+  logout: async (req, res, next) => {
     try {
-      const user = await authService.findUser({ username: req.body.username });
-      if (!user) {
-        return next(new CustomErrorHandler('Not Found', statusCode.NOT_FOUND));
-      }
+      const { user, access_token } = req.tokenInfo;
 
-      const originalPass = authService.unhashedPasswords(user.password, PAS_SEC);
-      if (originalPass !== req.body.password) {
-        return next(new CustomErrorHandler('Wrong credentials', statusCode.UNAUTHORIZED));
-      }
+      await authService.deleteOneByParams({ user: user._id, access_token });
 
-      // у payload додаємо два праметри, щоб потім їх використати при аунтифікації юзера і його прав
-      const accessToken = authService.createAuthTokens({ id: user._id, isAdmin: user.isAdmin });
-
-      // забираємо поле password
-      const { password, ...other } = user._doc;
-      // чомусь mongoose зберігає цілий файл з різними данними
-      // а наш юзер в полі _doc тому доступаємся так
-
-      res.json({ ...other, accessToken });
+      res.sendStatus(statusCodeENUM.NO_CONTENT);
     } catch (e) {
       next(e);
     }
-  }
+  },
+  changeAdminStatus: async (req, res, next) => {
+    try {
+      const { id, isAdmin } = req.possibleAdmin;
 
+      const newUser = await userService.updateById(id, { isAdmin: !isAdmin });
+      await authService.deleteMany({ user: id });
+
+      res.json(newUser);
+    } catch (e) {
+      next(e);
+    }
+  },
 };

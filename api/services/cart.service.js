@@ -1,4 +1,4 @@
-const { Cart } = require('../models');
+const { Cart } = require('../db');
 
 module.exports = {
   create: (CartObj) => Cart.create(CartObj),

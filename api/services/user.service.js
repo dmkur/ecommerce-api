@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User } = require('../db');
 
 module.exports = {
   create: (userObj) => User.create(userObj),
@@ -6,6 +6,7 @@ module.exports = {
   deleteById: (id) => User.findOneAndDelete(id),
   getById: (id) => User.findById(id),
   find: () => User.find(),
+  findOneByParams: (filter = {}) => User.findOne(filter),
   stats: () => {
     // current date
     const date = new Date();

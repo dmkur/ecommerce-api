@@ -31,7 +31,7 @@ orderRouter.delete(
 orderRouter.get(
   '/find/:userId',
   authMddlwr.checkIsAccessToken,
-  authMddlwr.checkAuthorizationOrIsAdmin,
+  authMddlwr.checkAuthOrIsAdmin,
   orderController.getUserOrdersById
 );
 

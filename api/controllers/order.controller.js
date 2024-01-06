@@ -1,12 +1,12 @@
 const { orderService } = require('../services');
-const { statusCode } = require('../constants');
+const { statusCodeENUM } = require('../constants');
 
 module.exports = {
   create: async (req, res, next) => {
     try {
       const newOrder = await orderService.create(req.body);
 
-      res.status(statusCode.CREATE).json(newOrder);
+      res.status(statusCodeENUM.CREATE).json(newOrder);
     } catch (e) {
       next(e);
     }
@@ -51,7 +51,7 @@ module.exports = {
   income: async (req, res, next) => {
     try {
       const productId = req.query.pid;
-      console.log(productId)
+      console.log(productId);
       const data = await orderService.stats(productId);
 
       res.json(data);
