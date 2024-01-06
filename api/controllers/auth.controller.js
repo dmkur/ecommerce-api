@@ -1,5 +1,5 @@
-const { authService, tokenService, userService } = require("../services");
-const { statusCodeENUM } = require("../constants");
+const { authService, tokenService, userService } = require('../services');
+const { statusCodeENUM } = require('../constants');
 
 module.exports = {
   login: async (req, res, next) => {

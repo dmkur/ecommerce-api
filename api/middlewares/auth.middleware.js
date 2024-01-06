@@ -1,6 +1,6 @@
-const { constants, statusCodeENUM } = require("../constants");
-const { CustomErrorHandler } = require("../errors");
-const { authService, tokenService, userService } = require("../services");
+const { constants, statusCodeENUM } = require('../constants');
+const { CustomErrorHandler } = require('../errors');
+const { authService, tokenService, userService } = require('../services');
 
 module.exports = {
   checkIsAccessToken: async (req, res, next) => {
@@ -9,7 +9,7 @@ module.exports = {
 
       if (!access_token) {
         return next(
-          new CustomErrorHandler("No token", statusCodeENUM.UNAUTHORIZED),
+          new CustomErrorHandler('No token', statusCodeENUM.UNAUTHORIZED),
         );
       }
 
@@ -19,7 +19,7 @@ module.exports = {
 
       if (!tokenInfo) {
         return next(
-          new CustomErrorHandler("Not Found", statusCodeENUM.UNAUTHORIZED),
+          new CustomErrorHandler('Not Found', statusCodeENUM.UNAUTHORIZED),
         );
       }
       req.tokenInfo = tokenInfo;
@@ -36,7 +36,7 @@ module.exports = {
       if (!refresh_token) {
         return next(
           new CustomErrorHandler(
-            "Token is absent",
+            'Token is absent',
             statusCodeENUM.UNAUTHORIZED,
           ),
         );
@@ -50,8 +50,8 @@ module.exports = {
   checkAuthOrIsAdmin: (req, res, next) => {
     try {
       if (
-        req.tokenInfo.user.toString() === req.params.id ||
-        req.tokenInfo.isAdmin
+        req.tokenInfo.user.toString() === req.params.id
+        || req.tokenInfo.isAdmin
       ) {
         // add toString() coz without, mongo return ObjectId("dkfksdjfdskjfsfkj")
 
@@ -88,28 +88,29 @@ module.exports = {
     try {
       const { id } = req.params;
       const user = await userService.getById(id);
-      if (!user)
-        next(new CustomErrorHandler("Not found", statusCodeENUM.NOT_FOUND));
+      if (!user) next(new CustomErrorHandler('Not found', statusCodeENUM.NOT_FOUND));
 
       switch (typeCheck) {
-        case "admin":
-          console.log(user.isAdmin, "V1");
-          if (user.isAdmin)
+        case 'admin':
+          console.log(user.isAdmin, 'V1');
+          if (user.isAdmin) {
             next(
               new CustomErrorHandler(
-                "User already have admin status",
+                'User already have admin status',
                 statusCodeENUM.CONFLICT,
               ),
             );
+          }
           break;
-        case "notAdmin":
-          if (!user.isAdmin)
+        case 'notAdmin':
+          if (!user.isAdmin) {
             next(
               new CustomErrorHandler(
-                "User have not admin status",
+                'User have not admin status',
                 statusCodeENUM.CONFLICT,
               ),
             );
+          }
           break;
         default:
       }
