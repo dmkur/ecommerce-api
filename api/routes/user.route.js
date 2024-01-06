@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { userController } = require('../controllers');
-const { authMddlwr, commonMddlwr } = require('../middlewares');
+const { authMddlwr, commonMddlwr, userMddlwr} = require('../middlewares');
 const { updateUserValidation, newUserValidator } = require('../validators/user.validator');
 
 const userRouter = Router();
@@ -44,6 +44,7 @@ userRouter.delete(
   '/:id',
   authMddlwr.checkIsAccessToken,
   authMddlwr.checkAuthOrIsAdmin,
+  userMddlwr.isUserPresent(),
   userController.deleteById,
 );
 

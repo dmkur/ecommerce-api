@@ -32,9 +32,9 @@ module.exports = {
   },
   isUserPresent: (from = 'params') => async (req, res, next) => {
     try {
-      const { userId } = req[from];
+      const { id } = req[from];
 
-      const user = await userService.getById(userId);
+      const user = await userService.getById(id);
 
       if (!user) {
         return next(new CustomErrorHandler('Not found', statusCodeENUM.NOT_FOUND));

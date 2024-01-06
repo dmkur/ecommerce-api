@@ -20,6 +20,7 @@ module.exports = {
   deleteById: async (req, res, next) => {
     try {
       await userService.deleteById(req.params.id);
+      await authService.deleteMany({ user: req.params.id });
 
       res.json('User has been deleted!');
     } catch (e) {
